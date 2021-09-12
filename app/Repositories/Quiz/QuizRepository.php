@@ -3,7 +3,6 @@
 namespace App\Repositories\Quiz;
 
 use App\Models\Quiz;
-use App\Models\QuizMCQ;
 
 class QuizRepository implements QuizInterface
 {
@@ -14,12 +13,17 @@ class QuizRepository implements QuizInterface
 
     public function __construct(Quiz $model)
     {
-        $this->model = $model;
+        if (auth()->check()) {
+            $this->model = $model->where('author_id', auth()->user()->id);
+        } else {
+            $this->model = $model;
+        }
     }
 
     public function getAll($request)
     {
-        return $this->model->latest()->paginate($request->perPage);
+        return $this->model->with(['author', 'high_scorer_user'])->orderBy('id', 'desc')
+            ->paginate($request->perPage);
     }
 
     public function getById($id)
@@ -56,13 +60,14 @@ class QuizRepository implements QuizInterface
 
     public function getMCQ($id)
     {
-        return $this->model->with('mcqs')->findOrFail($id);
+        return $this->model->with('mcqs')
+            ->findOrFail($id);
     }
 
     public function updateMCQ($id, $mcq_ids)
     {
-        return $this->model->model;
+        return $this->model->findOrFail($id)
+            ->mcqs()
+            ->sync($mcq_ids);
     }
-
-
 }

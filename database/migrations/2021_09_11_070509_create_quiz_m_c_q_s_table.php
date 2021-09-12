@@ -17,7 +17,6 @@ class CreateQuizMCQSTable extends Migration
             $table->id();
             $table->unsignedBigInteger('quiz_id');
             $table->unsignedBigInteger('mcq_id');
-            $table->timestamps();
         });
     }
 

@@ -14,12 +14,17 @@ class MCQRepository implements MCQInterface
 
     public function __construct(MCQ $model)
     {
-        $this->model = $model;
+        if (auth()->check()) {
+            $this->model = $model->where('author_id', auth()->user()->id);
+        } else {
+            $this->model = $model;
+        }
     }
 
     public function getAll($request)
     {
-        return $this->model->orderBy('id', 'desc')->paginate($request->perPage);
+        return $this->model->orderBy('id', 'desc')
+            ->paginate($request->perPage);
     }
 
     public function getById($id)

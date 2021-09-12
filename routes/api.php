@@ -27,6 +27,7 @@ Route::group([
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
 });
 
+// Authorised routes
 Route::group([
     'middleware' => ['api','auth']
 ], function ($router) {
@@ -35,3 +36,6 @@ Route::group([
     Route::apiResource('quiz', QuizController::class);
     Route::apiResource('mcq', MCQController::class);
 });
+
+// Public routes
+Route::get('quiz', [QuizController::class,'index']);

@@ -9,5 +9,7 @@ class QuizMCQ extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = ['quiz_id', 'mcq_id'];
+
+    public $timestamps = false;
 }

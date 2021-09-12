@@ -17,4 +17,14 @@ class Quiz extends Model
     {
         return $this->belongsToMany(MCQ::class, 'quiz_m_c_q_s','quiz_id', 'mcq_id');
     }
+
+    public function author()
+    {
+        return $this->belongsTo(User::class,'author_id');
+    }
+
+    public function high_scorer_user()
+    {
+        return $this->belongsTo(User::class,'high_scorer_id');
+    }
 }

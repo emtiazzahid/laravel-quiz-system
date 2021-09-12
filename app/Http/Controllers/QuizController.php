@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\QuizRequest;
+use App\Http\Resources\QuizResource;
 use App\Repositories\Quiz\QuizInterface;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,9 @@ class QuizController extends BaseController
 
     public function index(Request $request)
     {
-        return $this->quiz->getAll($request);
+        return QuizResource::collection(
+            $this->quiz->getAll($request)
+        );
     }
 
     public function store(QuizRequest $request)
@@ -54,11 +57,13 @@ class QuizController extends BaseController
     public function updateMCQForQuiz($id, Request $request)
     {
         $request->validate([
-            'selected_mcq_ids' => 'required|array|min:1'
+            'mcq_ids' => 'required|array|min:1'
         ], [
             'At least one mcq is required'
         ]);
 
-        return $this->quiz->updateMCQ($id, $request->selected_mcq_ids);
+        $this->quiz->updateMCQ($id, $request->mcq_ids);
+
+        return $this->sendResponse('', 'Data Updated Successfully');
     }
 }
