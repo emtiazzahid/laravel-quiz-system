@@ -28,7 +28,7 @@ class QuizRepository implements QuizInterface
 
     public function getById($id)
     {
-        return $this->model->find($id);
+        return $this->model->with(['author', 'high_scorer_user'])->find($id);
     }
 
     public function create(array $attr)

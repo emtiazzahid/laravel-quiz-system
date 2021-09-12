@@ -38,4 +38,5 @@ Route::group([
 });
 
 // Public routes
-Route::get('quiz', [QuizController::class,'index']);
+Route::get('pub/quiz', [QuizController::class,'index']);
+Route::get('pub/quiz/{id}', [QuizController::class,'show']);

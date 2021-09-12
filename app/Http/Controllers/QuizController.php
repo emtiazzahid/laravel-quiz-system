@@ -31,7 +31,9 @@ class QuizController extends BaseController
 
     public function show($id)
     {
-        return $this->quiz->getById($id);
+        return new QuizResource(
+            $this->quiz->getById($id)
+        );
     }
 
     public function edit($id)

@@ -23,7 +23,7 @@ class QuizFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->title,
+            'title' => $this->faker->sentence,
             'author_id' => User::factory(),
             'description' => $this->faker->text,
             'time_limit' => $this->faker->numberBetween(10,9999),
