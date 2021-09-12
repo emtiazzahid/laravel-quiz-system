@@ -12,4 +12,9 @@ class Quiz extends Model
     protected $fillable = [
         'title', 'author_id', 'description', 'time_limit', 'high_score', 'high_scorer_id'
     ];
+
+    public function mcqs()
+    {
+        return $this->belongsToMany(MCQ::class, 'quiz_m_c_q_s','quiz_id', 'mcq_id');
+    }
 }

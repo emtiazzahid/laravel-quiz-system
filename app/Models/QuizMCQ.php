@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class QuizMCQ extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
 }

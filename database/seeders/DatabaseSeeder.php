@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\MCQ;
+use App\Models\Quiz;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,5 +18,13 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserTableSeeder::class,
         ]);
+
+        Quiz::factory()
+            ->count(50)
+            ->create();
+
+        MCQ::factory()
+            ->count(50)
+            ->create();
     }
 }

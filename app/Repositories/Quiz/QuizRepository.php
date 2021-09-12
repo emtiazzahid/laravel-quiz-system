@@ -3,6 +3,7 @@
 namespace App\Repositories\Quiz;
 
 use App\Models\Quiz;
+use App\Models\QuizMCQ;
 
 class QuizRepository implements QuizInterface
 {
@@ -52,4 +53,16 @@ class QuizRepository implements QuizInterface
     {
         return $this->model->findOrFail($id)->delete();
     }
+
+    public function getMCQ($id)
+    {
+        return $this->model->with('mcqs')->findOrFail($id);
+    }
+
+    public function updateMCQ($id, $mcq_ids)
+    {
+        return $this->model->model;
+    }
+
+
 }

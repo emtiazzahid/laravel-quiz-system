@@ -19,7 +19,7 @@ class MCQRepository implements MCQInterface
 
     public function getAll($request)
     {
-        return $this->model->latest()->paginate($request->perPage);
+        return $this->model->orderBy('id', 'desc')->paginate($request->perPage);
     }
 
     public function getById($id)
@@ -46,10 +46,11 @@ class MCQRepository implements MCQInterface
         $data = $this->model->findOrFail($id);
         $data->update([
             'question' => $attr['question'],
+            'option_1' => $attr['option_1'],
             'option_2' => $attr['option_2'],
-            'option_3' => $attr['option_3'],
-            'option_4' => $attr['option_4'],
-            'option_5' => $attr['option_5'],
+            'option_3' => Arr::get($attr, 'option_3', null),
+            'option_4' => Arr::get($attr, 'option_4', null),
+            'option_5' => Arr::get($attr, 'option_5', null),
             'correct_answer_no' => $attr['correct_answer_no'],
         ]);
 

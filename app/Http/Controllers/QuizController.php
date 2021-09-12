@@ -45,4 +45,20 @@ class QuizController extends BaseController
     {
         return $this->quiz->delete($id);
     }
+
+    public function quizWithMCQ($id)
+    {
+        return $this->quiz->getMCQ($id);
+    }
+
+    public function updateMCQForQuiz($id, Request $request)
+    {
+        $request->validate([
+            'selected_mcq_ids' => 'required|array|min:1'
+        ], [
+            'At least one mcq is required'
+        ]);
+
+        return $this->quiz->updateMCQ($id, $request->selected_mcq_ids);
+    }
 }

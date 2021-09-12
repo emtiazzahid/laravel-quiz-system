@@ -30,6 +30,8 @@ Route::group([
 Route::group([
     'middleware' => ['api','auth']
 ], function ($router) {
+    Route::put('quiz/{id}/mcq', [QuizController::class,'updateMCQForQuiz']);
+    Route::get('quiz/{id}/mcq', [QuizController::class,'quizWithMCQ']);
     Route::apiResource('quiz', QuizController::class);
     Route::apiResource('mcq', MCQController::class);
 });
