@@ -22,13 +22,15 @@ class QuizRepository implements QuizInterface
 
     public function getAll($request)
     {
-        return $this->model->with(['author', 'high_scorer_user'])->orderBy('id', 'desc')
+        return $this->model->with(['author', 'high_scorer_user'])
+            ->orderBy('id', 'desc')
             ->paginate($request->perPage);
     }
 
     public function getById($id)
     {
-        return $this->model->with(['author', 'high_scorer_user'])->find($id);
+        return $this->model->with(['author', 'high_scorer_user'])
+            ->find($id);
     }
 
     public function create(array $attr)
@@ -55,7 +57,8 @@ class QuizRepository implements QuizInterface
 
     public function delete($id)
     {
-        return $this->model->findOrFail($id)->delete();
+        return $this->model->findOrFail($id)
+            ->delete();
     }
 
     public function getMCQ($id)

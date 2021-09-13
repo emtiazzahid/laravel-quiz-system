@@ -7,7 +7,7 @@ use App\Http\Resources\QuizResource;
 use App\Repositories\Quiz\QuizInterface;
 use Illuminate\Http\Request;
 
-class QuizController extends BaseController
+class QuizTestController extends BaseController
 {
     private $quiz;
 
@@ -82,6 +82,7 @@ class QuizController extends BaseController
      */
     public function quizWithMCQ($id)
     {
+        return  $id;
         return $this->quiz->getMCQ($id);
     }
 

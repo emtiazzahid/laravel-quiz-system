@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\MCQController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\QuizTestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +39,19 @@ Route::group([
     Route::apiResource('mcq', MCQController::class);
 });
 
-// Public routes
-Route::get('pub/quiz', [QuizController::class,'index']);
-Route::get('pub/quiz/{id}', [QuizController::class,'show']);
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'pub'
+], function ($router) {
+    // Public routes
+    Route::get('quiz', [HomeController::class,'quizzes']);
+    Route::get('quiz/{id}', [HomeController::class,'quiz']);
+
+    Route::group([
+        'middleware' => ['auth']
+    ], function ($router) {
+        Route::get('quiz/{id}/mcq', [QuizTestController::class,'index']);
+    });
+});
+
+

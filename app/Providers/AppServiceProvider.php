@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Homepage\HomeInterface;
+use App\Repositories\Homepage\HomeRepository;
 use App\Repositories\MCQ\MCQInterface;
 use App\Repositories\MCQ\MCQRepository;
 use App\Repositories\Quiz\QuizInterface;
@@ -19,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(QuizInterface::class, QuizRepository::class);
         $this->app->singleton(MCQInterface::class, MCQRepository::class);
+        $this->app->singleton(HomeInterface::class, HomeRepository::class);
     }
 
     /**
