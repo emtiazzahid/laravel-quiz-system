@@ -8,6 +8,8 @@ use App\Repositories\MCQ\MCQInterface;
 use App\Repositories\MCQ\MCQRepository;
 use App\Repositories\Quiz\QuizInterface;
 use App\Repositories\Quiz\QuizRepository;
+use App\Repositories\Quiz\QuizTestInterface;
+use App\Repositories\Quiz\QuizTestRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(QuizInterface::class, QuizRepository::class);
         $this->app->singleton(MCQInterface::class, MCQRepository::class);
         $this->app->singleton(HomeInterface::class, HomeRepository::class);
+        $this->app->singleton(QuizTestInterface::class, QuizTestRepository::class);
     }
 
     /**

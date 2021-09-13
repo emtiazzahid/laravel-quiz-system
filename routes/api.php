@@ -50,7 +50,10 @@ Route::group([
     Route::group([
         'middleware' => ['auth']
     ], function ($router) {
-        Route::get('quiz/{id}/mcq', [QuizTestController::class,'index']);
+        Route::get('quiz/{id}/mcq', [QuizTestController::class,'mcqList']);
+        Route::post('quiz/{id}/save', [QuizTestController::class,'saveTest']); //TODO::AUTOSAVE FEATURE
+        Route::post('quiz/{id}/start', [QuizTestController::class,'start']);
+        Route::post('quiz/{id}/complete', [QuizTestController::class,'complete']);
     });
 });
 

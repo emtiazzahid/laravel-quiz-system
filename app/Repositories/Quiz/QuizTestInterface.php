@@ -4,5 +4,5 @@ namespace App\Repositories\Quiz;
 
 interface QuizTestInterface
 {
-    public function getAll($request);
+    public function getMCQList($id);
 }

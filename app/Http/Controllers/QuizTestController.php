@@ -3,104 +3,46 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\QuizRequest;
+use App\Http\Resources\PublicQuizResource;
 use App\Http\Resources\QuizResource;
 use App\Repositories\Quiz\QuizInterface;
+use App\Repositories\Quiz\QuizTestInterface;
 use Illuminate\Http\Request;
 
 class QuizTestController extends BaseController
 {
-    private $quiz;
+    private $quizTest;
 
-    public function __construct(QuizInterface $quiz){
-        $this->quiz = $quiz;
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-     */
-    public function index(Request $request)
-    {
-        return QuizResource::collection(
-            $this->quiz->getAll($request)
-        );
-    }
-
-    /**
-     * @param QuizRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function store(QuizRequest $request)
-    {
-        $data = $this->quiz->create($request->all());
-
-        return $this->sendResponse($data, 'Data Insert Successfully');
+    public function __construct(QuizTestInterface $quizTest){
+        $this->quizTest = $quizTest;
     }
 
     /**
      * @param $id
-     * @return QuizResource
+     * @return PublicQuizResource
      */
-    public function show($id)
+    public function mcqList($id)
     {
-        return new QuizResource(
-            $this->quiz->getById($id)
-        );
+        return new PublicQuizResource( $this->quizTest->getMCQList($id) );
     }
 
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function edit($id)
+    public function saveTest(Request $request)
     {
-        return $this->quiz->getById($id);
+        //TODO:: AUTOSAVE FEATURE
     }
 
-    /**
-     * @param $id
-     * @param QuizRequest $request
-     * @return mixed
-     */
-    public function update($id, QuizRequest $request)
+    public function start(Request $request)
     {
-        return $this->quiz->update($id, $request->all());
+        //PUT RECORD FOR PARTICIPATE
     }
 
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function destroy($id)
-    {
-        return $this->quiz->delete($id);
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function quizWithMCQ($id)
-    {
-        return  $id;
-        return $this->quiz->getMCQ($id);
-    }
-
-    /**
-     * @param $id
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function updateMCQForQuiz($id, Request $request)
+    public function complete($id, Request $request)
     {
         $request->validate([
-            'mcq_ids' => 'required|array|min:1'
-        ], [
-            'At least one mcq is required'
+            'mcqs' => 'required|array|min:1'
         ]);
 
-        $this->quiz->updateMCQ($id, $request->mcq_ids);
 
-        return $this->sendResponse('', 'Data Updated Successfully');
+        return $this->quizTest->processTest($id, $request);
     }
 }

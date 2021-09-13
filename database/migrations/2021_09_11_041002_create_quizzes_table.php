@@ -19,7 +19,7 @@ class CreateQuizzesTable extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->smallInteger('time_limit');
-            $table->tinyInteger('high_score')->default(0);
+            $table->float('high_score', 5,2)->default(0);
             $table->unsignedBigInteger('high_scorer_id')->nullable();
             $table->timestamps();
         });
