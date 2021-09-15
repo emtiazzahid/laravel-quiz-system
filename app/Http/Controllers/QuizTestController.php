@@ -31,9 +31,9 @@ class QuizTestController extends BaseController
         //TODO:: AUTOSAVE FEATURE
     }
 
-    public function start(Request $request)
+    public function start($id)
     {
-        //PUT RECORD FOR PARTICIPATE
+        return $this->quizTest->startQuiz($id);
     }
 
     public function complete($id, Request $request)
