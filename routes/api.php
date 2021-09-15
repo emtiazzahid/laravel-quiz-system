@@ -6,6 +6,7 @@ use App\Http\Controllers\QuizController;
 use App\Http\Controllers\MCQController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuizTestController;
+use App\Http\Controllers\QuizAttemptController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,9 +52,10 @@ Route::group([
         'middleware' => ['auth']
     ], function ($router) {
         Route::get('quiz/{id}/mcq', [QuizTestController::class,'mcqList']);
-        Route::post('quiz/{id}/save', [QuizTestController::class,'saveTest']); //TODO::AUTOSAVE FEATURE
         Route::post('quiz/{id}/start', [QuizTestController::class,'start']);
-        Route::post('quiz/{id}/complete', [QuizTestController::class,'complete']);
+        Route::get('attempts', [QuizAttemptController::class,'index']);
+        Route::post('attempts/{id}/complete', [QuizAttemptController::class,'complete']);
+        Route::get('attempts/{id}', [QuizAttemptController::class,'result']);
     });
 });
 

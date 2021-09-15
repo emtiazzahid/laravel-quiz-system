@@ -17,6 +17,12 @@ class CreateQuizAttemptsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('quiz_id');
             $table->unsignedBigInteger('user_id');
+            $table->tinyInteger('total_mcq')->nullable()
+                ->comment('Total MCQ present on test time');
+            $table->tinyInteger('total_answered_mcq')->nullable();
+            $table->tinyInteger('total_correct_answer')->nullable();
+            $table->tinyInteger('high_score')->nullable()
+                ->comment('High score on that attempt');
             $table->boolean('status')->default(1); //1: Running or 0: completed
             $table->float('score', 5,2)->default(0);
             $table->timestamp('created_at')->useCurrent();

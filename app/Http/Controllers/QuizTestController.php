@@ -26,23 +26,17 @@ class QuizTestController extends BaseController
         return new PublicQuizResource( $this->quizTest->getMCQList($id) );
     }
 
-    public function saveTest(Request $request)
-    {
-        //TODO:: AUTOSAVE FEATURE
-    }
-
-    public function start($id)
-    {
-        return $this->quizTest->startQuiz($id);
-    }
-
-    public function complete($id, Request $request)
+    /**
+     * @param $id
+     * @param Request $request
+     * @return array
+     */
+    public function start($id, Request $request)
     {
         $request->validate([
-            'mcqs' => 'required|array|min:1'
+            'attempt_id' => 'nullable' // Will be null when a test is being initialized
         ]);
 
-
-        return $this->quizTest->processTest($id, $request);
+        return $this->quizTest->startQuiz($id, $request->attempt_id);
     }
 }
