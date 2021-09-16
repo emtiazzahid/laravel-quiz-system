@@ -24,7 +24,7 @@ class QuizFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence,
-            'author_id' => 1,
+            'author_id' => $this->faker->numberBetween(1,10),
             'description' => $this->faker->text,
             'time_limit' => $this->faker->numberBetween(10,9999),
         ];

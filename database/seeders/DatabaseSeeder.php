@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\MCQ;
 use App\Models\Quiz;
+use App\Models\QuizMCQ;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -19,12 +20,10 @@ class DatabaseSeeder extends Seeder
             UserTableSeeder::class,
         ]);
 
-        Quiz::factory()
-            ->count(50)
-            ->create();
-
-        MCQ::factory()
-            ->count(50)
-            ->create();
+        Quiz::factory()->count(20)->create()->each(function($c) {
+            $c->mcqs()->saveMany(
+                MCQ::factory()->count(random_int(10,50))->create()
+            );
+        });
     }
 }
