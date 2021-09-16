@@ -28,7 +28,7 @@ class AuthController extends Controller
         ]);
 
         if (! $token = auth()->attempt($request->all())) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['data'=> 'nai','error' => 'Wrong Email or Password'], 401);
         }
 
         return $this->createNewToken($token);

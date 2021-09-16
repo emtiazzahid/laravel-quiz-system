@@ -7,6 +7,7 @@ use App\Http\Controllers\MCQController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuizTestController;
 use App\Http\Controllers\QuizAttemptController;
+use App\Http\Controllers\ReportsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,7 @@ Route::group([
     Route::get('quiz/{id}/mcq', [QuizController::class,'quizWithMCQ']);
     Route::apiResource('quiz', QuizController::class);
     Route::apiResource('mcq', MCQController::class);
+    Route::get('dashboard-summary', [ReportsController::class, 'dashboard']);
 });
 
 Route::group([
