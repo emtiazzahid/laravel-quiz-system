@@ -11,7 +11,17 @@ class QuizAttempt extends Model
 
     const UPDATED_AT = null;
 
-    protected $fillable = ['quiz_id', 'user_id', 'status', 'score', 'created_at'];
+    protected $fillable = [
+        'quiz_id',
+        'user_id',
+        'total_mcq',
+        'total_answered_mcq',
+        'total_correct_answer',
+        'high_score',
+        'status',
+        'score',
+        'created_at'
+    ];
 
     public function quiz()
     {

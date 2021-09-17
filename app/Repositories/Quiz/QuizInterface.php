@@ -12,6 +12,8 @@ interface QuizInterface
 
     public function update($id, array $attr);
 
+    public function updateDigestSettings($id, bool $status);
+
     public function delete($id);
 
     public function getMCQ($id);

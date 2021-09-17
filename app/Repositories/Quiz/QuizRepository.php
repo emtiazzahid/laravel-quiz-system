@@ -46,13 +46,15 @@ class QuizRepository implements QuizInterface
     public function update($id, array $attr)
     {
         $data = $this->model->findOrFail($id);
-        $data->update([
-            'title' => $attr['title'],
-            'description' => $attr['description'],
-            'time_limit' => $attr['time_limit']
-        ]);
+        $data->update($attr);
 
         return $data;
+    }
+
+    public function updateDigestSettings($id, $status)
+    {
+        return $this->model->findOrFail($id)
+            ->update(['digest_email' => boolval($status)]);
     }
 
     public function delete($id)

@@ -69,6 +69,22 @@ class QuizController extends BaseController
 
     /**
      * @param $id
+     * @param Request $request
+     * @return mixed
+     */
+    public function updateDigestSettings($id, Request $request)
+    {
+        $request->validate([
+            'status' => 'required|bool'
+        ]);
+
+        $this->quiz->updateDigestSettings($id, $request->status);
+
+        return $this->sendResponse('', 'Status Update Successfully');
+    }
+
+    /**
+     * @param $id
      * @return mixed
      */
     public function destroy($id)

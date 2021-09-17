@@ -21,6 +21,7 @@ class CreateQuizzesTable extends Migration
             $table->smallInteger('time_limit');
             $table->float('high_score', 5,2)->default(0);
             $table->unsignedBigInteger('high_scorer_id')->nullable();
+            $table->boolean('digest_email')->default(0);
             $table->timestamps();
         });
     }

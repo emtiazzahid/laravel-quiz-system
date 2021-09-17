@@ -49,6 +49,7 @@ class QuizTestRepository implements QuizTestInterface
     {
         $attempt = QuizAttempt::where('user_id', auth()->user()->id)
             ->findOrFail($attempt_id);
+
         $quiz = $this->quiz->withCount('mcqs')->find($attempt->quiz_id);
 
         $answers = [];

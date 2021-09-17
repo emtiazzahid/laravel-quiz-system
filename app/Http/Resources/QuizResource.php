@@ -24,6 +24,7 @@ class QuizResource extends JsonResource
             'high_score' => $this->high_score,
             'high_scorer_id' => $this->high_scorer_id,
             'high_scorer_name' => optional($this->high_scorer_user)->name,
+            'digest_email' => $this->digest_email,
         ];
     }
 }

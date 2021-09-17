@@ -37,6 +37,7 @@ Route::group([
 ], function ($router) {
     Route::put('quiz/{id}/mcq', [QuizController::class,'updateMCQForQuiz']);
     Route::get('quiz/{id}/mcq', [QuizController::class,'quizWithMCQ']);
+    Route::put('quiz/{id}/diggest-email', [QuizController::class,'updateDigestSettings']);
     Route::apiResource('quiz', QuizController::class);
     Route::apiResource('mcq', MCQController::class);
     Route::get('dashboard-summary', [ReportsController::class, 'dashboard']);

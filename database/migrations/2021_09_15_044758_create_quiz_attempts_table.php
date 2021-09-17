@@ -21,7 +21,7 @@ class CreateQuizAttemptsTable extends Migration
                 ->comment('Total MCQ present on test time');
             $table->tinyInteger('total_answered_mcq')->nullable();
             $table->tinyInteger('total_correct_answer')->nullable();
-            $table->tinyInteger('high_score')->nullable()
+            $table->float('high_score', 5,2)->nullable()
                 ->comment('High score on that attempt');
             $table->boolean('status')->default(1); //1: Running or 0: completed
             $table->float('score', 5,2)->default(0);

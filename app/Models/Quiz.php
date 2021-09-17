@@ -10,7 +10,13 @@ class Quiz extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'author_id', 'description', 'time_limit', 'high_score', 'high_scorer_id'
+        'title',
+        'author_id',
+        'description',
+        'time_limit',
+        'high_score',
+        'high_scorer_id',
+        'digest_email'
     ];
 
     public function mcqs()
