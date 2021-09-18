@@ -14,5 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return response()->json([
+        'name' => 'QuizAPI',
+        'url' => 'https://squiz-app.netlify.app',
+        'description' => 'Api built with PHP 8. Framework used Laravel',
+    ]);
 });
