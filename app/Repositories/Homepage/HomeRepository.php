@@ -12,8 +12,16 @@ class HomeRepository implements HomeInterface
      */
     public function getQuizzes($request)
     {
-        return Quiz::orderBy('id', 'desc')
-            ->paginate($request->perPage);
+        $quizzes =  Quiz::orderBy('id', 'desc');
+
+        if (!empty($request->title)) {
+            $quizzes->where('title', 'like', '%'.$request->title.'%')
+                ->orWhereHas('author', function ($q) use ($request) {
+                    $q->where('name', 'like', '%'.$request->title.'%');
+                });
+        }
+
+        return $quizzes->paginate($request->perPage);
     }
 
     /**

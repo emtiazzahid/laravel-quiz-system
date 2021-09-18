@@ -73,7 +73,7 @@ class QuizTestRepository implements QuizTestInterface
                 }
             };
 
-            $score = $this->calculateScore($total_correct_answer, $total_answered_mcq);
+            $score = $this->calculateScore($total_correct_answer, $quiz->mcqs_count);
 
             if ($quiz->high_score < $score) {
                 $quiz->update(['high_score' => $score]);
@@ -181,12 +181,12 @@ class QuizTestRepository implements QuizTestInterface
 
     /**
      * @param $total_correct_answer
-     * @param $total_answered_mcq
+     * @param $total_mcq
      * @return float
      */
-    private function calculateScore($total_correct_answer, $total_answered_mcq)
+    private function calculateScore($total_correct_answer, $total_mcq)
     {
-        return round((($total_correct_answer * 100) / $total_answered_mcq), 2);
+        return round((($total_correct_answer * 100) / $total_mcq), 2);
     }
 
     /**

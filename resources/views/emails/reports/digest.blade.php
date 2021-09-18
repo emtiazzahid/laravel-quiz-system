@@ -1,7 +1,7 @@
 @component('mail::message')
 # Daily Digest Report
 
-This is a digest report of you Quiz
+This is a digest report of your Quiz
 
 ## Title: {{ $report['quiz_title']  }}
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\Report\ReportInterface;
-use http\Client\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class ReportsController extends Controller
@@ -17,7 +17,7 @@ class ReportsController extends Controller
 
     public function dashboard(Request $request)
     {
-        if ($request->refresh) {
+        if ($request->refresh && filter_var($request->refresh,FILTER_VALIDATE_BOOLEAN)) {
             Cache::forget('dashboard-top-stats');
         }
 
