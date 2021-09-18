@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\Report\ReportInterface;
+use http\Client\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ReportsController extends Controller
 {
@@ -13,8 +15,14 @@ class ReportsController extends Controller
         $this->report = $report;
     }
 
-    public function dashboard()
+    public function dashboard(Request $request)
     {
-        return $this->report->dashboardData();
+        if ($request->refresh) {
+            Cache::forget('dashboard-top-stats');
+        }
+
+        return Cache::remember('dashboard-top-stats', 3600, function () {
+            return $this->report->dashboardData();
+        });
     }
 }

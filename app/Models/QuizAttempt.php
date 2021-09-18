@@ -23,8 +23,19 @@ class QuizAttempt extends Model
         'created_at'
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function quiz()
     {
         return $this->belongsTo(Quiz::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function attendee()
+    {
+        return $this->belongsTo(User::class,'user_id');
     }
 }

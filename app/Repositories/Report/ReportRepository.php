@@ -7,7 +7,6 @@ use App\Models\MCQ;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
 use App\Models\Report;
-
 class ReportRepository implements ReportInterface
 {
     /**

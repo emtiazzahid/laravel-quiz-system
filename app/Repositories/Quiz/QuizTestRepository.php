@@ -7,6 +7,7 @@ use App\Models\MCQ;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 
 class QuizTestRepository implements QuizTestInterface
 {
@@ -146,6 +147,38 @@ class QuizTestRepository implements QuizTestInterface
             ])->first();
     }
 
+    public function digestReport($id)
+    {
+        // Search quiz attempts from yesterday
+        $quiz = $this->quiz->whereHas('quiz_attempts', function ($q) {
+            $q->whereDate('created_at', now()->subDays(1));
+        })->with('quiz_attempts.attendee')->find($id);
+        if (!$quiz) {
+            return false;
+        }
+
+        $attempts = [];
+        foreach ($quiz->quiz_attempts as $attempt) {
+            $attempts[$attempt->attendee->id][] = $attempt->toArray();
+        }
+
+        $result = [];
+        foreach ($attempts as $attempt) {
+            $marks = $this->getAvgMinMax(array_column($attempt, 'score'));
+            $result[] = array_merge([
+                'user_name' => Arr::get($attempt,'0.attendee.name'),
+                'user_email' => Arr::get($attempt,'0.attendee.email'),
+                'number_of_attempt' => count($attempt),
+            ], $marks);
+        }
+
+        return [
+            'quiz_title' => $quiz->title,
+            'date' => now()->subDays(1)->format('Y-m-d'),
+            'users' => $result,
+        ];
+    }
+
     /**
      * @param $total_correct_answer
      * @param $total_answered_mcq
@@ -169,5 +202,18 @@ class QuizTestRepository implements QuizTestInterface
             ->take(1)
             ->first()
             ->update($data);
+    }
+
+    /**
+     * @param $scores
+     * @return array
+     */
+    private function getAvgMinMax($scores): array
+    {
+        return [
+            'max' => max($scores),
+            'min' => min($scores),
+            'avg' => array_sum($scores) / count($scores),
+        ];
     }
 }
