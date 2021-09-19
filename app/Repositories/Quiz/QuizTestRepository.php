@@ -48,30 +48,16 @@ class QuizTestRepository implements QuizTestInterface
      */
     public function processTest($attempt_id, $answered_mcqs = [])
     {
-        $attempt = QuizAttempt::where('user_id', auth()->user()->id)
-            ->findOrFail($attempt_id);
+        $quiz = $this->findQuizByAttempt($attempt_id);
 
-        $quiz = $this->quiz->withCount('mcqs')->find($attempt->quiz_id);
-
-        $answers = [];
-        foreach ($answered_mcqs as $mcq) {
-            if (isset($mcq['given_answer'])) {
-                $answers[$mcq['id']] = $mcq['given_answer'];
-            }
-        }
+        $answers = $this->filterAnswerSheet($answered_mcqs);
 
         $total_answered_mcq = count($answers);
         $total_correct_answer = 0;
         $score = 0;
 
         if ($total_answered_mcq) {
-            $mcqs = MCQ::whereIn('id', array_keys($answers))->get();
-
-            foreach ($mcqs as $mcq) {
-                if($mcq->correct_answer_no == $answers[$mcq->id]) {
-                    $total_correct_answer++;
-                }
-            };
+            $total_correct_answer = $this->findTotalCorrectAnswer($answers);
 
             $score = $this->calculateScore($total_correct_answer, $quiz->mcqs_count);
 
@@ -215,5 +201,50 @@ class QuizTestRepository implements QuizTestInterface
             'min' => min($scores),
             'avg' => array_sum($scores) / count($scores),
         ];
+    }
+
+    /**
+     * @param $attempt_id
+     * @return mixed
+     */
+    private function findQuizByAttempt($attempt_id)
+    {
+        $attempt = QuizAttempt::where('user_id', auth()->user()->id)
+            ->findOrFail($attempt_id);
+
+        return $this->quiz->withCount('mcqs')->find($attempt->quiz_id);
+    }
+
+    /**
+     * @param $answered_mcqs
+     * @return array
+     */
+    private function filterAnswerSheet($answered_mcqs): array
+    {
+        $answers = [];
+        foreach ($answered_mcqs as $mcq) {
+            if (isset($mcq['given_answer'])) {
+                $answers[$mcq['id']] = $mcq['given_answer'];
+            }
+        }
+
+        return $answers;
+    }
+
+    /**
+     * @param array $answers
+     * @return int
+     */
+    private function findTotalCorrectAnswer(array $answers)
+    {
+        $mcqs = MCQ::whereIn('id', array_keys($answers))->get();
+
+        foreach ($mcqs as $mcq) {
+            if($mcq->correct_answer_no == $answers[$mcq->id]) {
+                $total_correct_answer++;
+            }
+        };
+
+        return $total_correct_answer;
     }
 }
