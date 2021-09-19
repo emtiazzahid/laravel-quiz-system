@@ -237,6 +237,7 @@ class QuizTestRepository implements QuizTestInterface
      */
     private function findTotalCorrectAnswer(array $answers)
     {
+        $total_correct_answer = 0;
         $mcqs = MCQ::whereIn('id', array_keys($answers))->get();
 
         foreach ($mcqs as $mcq) {

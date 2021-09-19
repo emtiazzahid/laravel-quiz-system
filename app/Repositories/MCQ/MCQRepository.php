@@ -34,30 +34,16 @@ class MCQRepository implements MCQInterface
 
     public function create(array $attr)
     {
-        return $this->model->create([
-            'author_id' => auth()->user()->id,
-            'question' => $attr['question'],
-            'option_1' => $attr['option_1'],
-            'option_2' => $attr['option_2'],
-            'option_3' => Arr::get($attr, 'option_3', null),
-            'option_4' => Arr::get($attr, 'option_4', null),
-            'option_5' => Arr::get($attr, 'option_5', null),
-            'correct_answer_no' => $attr['correct_answer_no'],
-        ]);
+        return $this->model->create(array_merge([
+            'author_id' => auth()->user()->id],
+            $this->mcqArray($attr)
+        ));
     }
 
     public function update($id, array $attr)
     {
         $data = $this->model->findOrFail($id);
-        $data->update([
-            'question' => $attr['question'],
-            'option_1' => $attr['option_1'],
-            'option_2' => $attr['option_2'],
-            'option_3' => Arr::get($attr, 'option_3', null),
-            'option_4' => Arr::get($attr, 'option_4', null),
-            'option_5' => Arr::get($attr, 'option_5', null),
-            'correct_answer_no' => $attr['correct_answer_no'],
-        ]);
+        $data->update($this->mcqArray($attr));
 
         return $data;
     }
@@ -65,5 +51,18 @@ class MCQRepository implements MCQInterface
     public function delete($id)
     {
         return $this->model->findOrFail($id)->delete();
+    }
+
+    private function mcqArray($attr)
+    {
+        return [
+            'question' => $attr['question'],
+            'option_1' => $attr['option_1'],
+            'option_2' => $attr['option_2'],
+            'option_3' => Arr::get($attr, 'option_3', null),
+            'option_4' => Arr::get($attr, 'option_4', null),
+            'option_5' => Arr::get($attr, 'option_5', null),
+            'correct_answer_no' => $attr['correct_answer_no'],
+        ];
     }
 }
