@@ -64,7 +64,9 @@ class QuizController extends BaseController
      */
     public function update($id, QuizRequest $request)
     {
-        return $this->quiz->update($id, $request->all());
+        $this->quiz->update($id, $request->all());
+
+        return $this->sendResponse('', 'Data updated Successfully');
     }
 
     /**
@@ -89,7 +91,9 @@ class QuizController extends BaseController
      */
     public function destroy($id)
     {
-        return $this->quiz->delete($id);
+         $this->quiz->delete($id);
+
+         return $this->sendResponse('', 'Data deleted Successfully');
     }
 
     /**

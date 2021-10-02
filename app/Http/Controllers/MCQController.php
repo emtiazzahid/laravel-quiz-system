@@ -66,7 +66,9 @@ class MCQController extends BaseController
      */
     public function update($id, MCQRequest $request)
     {
-        return $this->mcq->update($id, $request->all());
+        $this->mcq->update($id, $request->all());
+
+        return $this->sendResponse('', 'Data Updated Successfully');
     }
 
     /**
@@ -75,6 +77,8 @@ class MCQController extends BaseController
      */
     public function destroy($id)
     {
-        return $this->mcq->delete($id);
+        $this->mcq->delete($id);
+
+        return $this->sendResponse('', 'Data deleted Successfully');
     }
 }
