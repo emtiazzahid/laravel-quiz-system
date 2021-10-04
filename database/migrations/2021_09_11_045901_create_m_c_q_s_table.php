@@ -15,7 +15,7 @@ class CreateMCQSTable extends Migration
     {
         Schema::create('m_c_q_s', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('author_id');
+            $table->foreignId('author_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->text('question');
             $table->text('option_1');
             $table->text('option_2');

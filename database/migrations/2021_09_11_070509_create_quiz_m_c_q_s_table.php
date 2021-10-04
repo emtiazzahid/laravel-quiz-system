@@ -15,8 +15,8 @@ class CreateQuizMCQSTable extends Migration
     {
         Schema::create('quiz_m_c_q_s', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('quiz_id');
-            $table->unsignedBigInteger('mcq_id');
+            $table->foreignId('quiz_id')->constrained('quizzes')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('mcq_id')->constrained('m_c_q_s')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

@@ -23,7 +23,7 @@ class MCQFactory extends Factory
     public function definition()
     {
         return [
-            'author_id' => $this->faker->numberBetween(1,10),
+            'author_id' =>  User::get()->random()->id,
             'question' => $this->faker->sentence,
             'option_1' => $this->faker->sentence,
             'option_2' => $this->faker->sentence,

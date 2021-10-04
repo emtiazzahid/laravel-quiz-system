@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\MCQ;
 use App\Models\Quiz;
 use App\Models\QuizMCQ;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,6 +17,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        //create a known demo user
+        User::factory()->create([
+            'email' => 'example@mail.com'
+        ]);
+
         $this->call([
             UserTableSeeder::class,
         ]);
