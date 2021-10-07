@@ -2,6 +2,7 @@
 ![Heroku](https://scrutinizer-ci.com/g/emtiazzahid/laravel-quiz-system/badges/quality-score.png?b=master&s=0348db35ecefcd904d7b79418e1f627e452bd13e)
 ![Heroku](https://scrutinizer-ci.com/g/emtiazzahid/laravel-quiz-system/badges/build.png?b=master&s=e4952fa027452bb103e589c47d8b3edeb5b3c2bf)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lime.svg)](https://opensource.org/licenses/MIT)
+![example workflow](https://github.com/emtiazzahid/laravel-quiz-system/actions/workflows/laravel.yml/badge.svg)
 
 
 ## Demo: [API](https://squiz-api.herokuapp.com/) | [APP](https://squiz-app.netlify.app/)

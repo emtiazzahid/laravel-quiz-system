@@ -1,5 +1,5 @@
-# GitHub Action for Laravel with MySQL and Redis
-name: Testing Laravel with MySQL
+# GitHub Action with MySQL and Redis
+name: Testing
 on: [push, pull_request]
 jobs:
   laravel:
@@ -12,7 +12,7 @@ jobs:
       BROADCAST_DRIVER: log
       CACHE_DRIVER: redis
       QUEUE_CONNECTION: redis
-      SESSION_DRIVER: redis    
+      SESSION_DRIVER: redis
     services:
       mysql:
         image: mysql:5.7
