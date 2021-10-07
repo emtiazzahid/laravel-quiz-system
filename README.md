@@ -18,24 +18,33 @@ git clone https://github.com/emtiazzahid/laravel-quiz-system.git
 2. Install composer packages
 ```
 cd laravel-quiz-system
+```
+```
 composer install
 ```
 
 3. Create and setup .env file
 ```
 cp .env.example .env
+```
+```
 php artisan key:generate
+```
+```
 php artisan jwt:secret
 ```
 
-    put database credentials in .env file
+4. put database credentials in .env file
 
-4. Migrate and insert records
+    for testing add database name on DB_TEST_DATABASE
+
+
+6. Migrate and insert records
 ```
 php artisan migrate --seed
 ```
 
-5. To run test
+6. To run test
 ```
 .\vendor\bin\phpunit
 ```
