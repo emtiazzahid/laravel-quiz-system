@@ -37,7 +37,7 @@ php artisan jwt:secret
 
 4. put database credentials in .env file
 
-    for testing add database name on DB_TEST_DATABASE
+   for testing add database name on DB_TEST_DATABASE
 
 
 6. Migrate and insert records
@@ -50,12 +50,24 @@ php artisan migrate --seed
 .\vendor\bin\phpunit
 ```
 
-###For Frontend Repo Visit: [quiz app](https://github.com/emtiazzahid/quiz-app)
+#### Optionals:
+#### [Laravel scout support](https://laravel.com/docs/9.x/scout)
+to use laravel scout set your driver configs to .env
+
+example for algolia
+```
+SCOUT_DRIVER=algolia
+SCOUT_QUEUE=true
+ALGOLIA_APP_ID=
+ALGOLIA_SECRET=
+```
+
+### For Frontend Repo Visit: [quiz app](https://github.com/emtiazzahid/quiz-app)
 
 ## Screenshot
 ![QuizApp Demo](https://user-images.githubusercontent.com/10188029/133921722-532ff8b1-0abf-443a-af66-92a93655fc35.gif)
 
-## Additional packages used
+### Additional packages used
 [jwt-auth](https://github.com/tymondesigns/jwt-auth)
 
 ## License
