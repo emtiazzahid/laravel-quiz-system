@@ -13,6 +13,7 @@
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.15",
         "laravel/tinker": "^2.5",
+        "lcobucci/jwt": "4.0.4",
         "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {
