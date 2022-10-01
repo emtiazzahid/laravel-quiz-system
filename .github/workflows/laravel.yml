@@ -60,8 +60,7 @@ jobs:
         run: |
           php -r "file_exists('.env') || copy('.env.example', '.env');"
           php artisan key:generate
-          php artisan jwt:secret
-          echo "yes"
+          php artisan jwt:secret -f
       - name: Clear Config
         run: php artisan config:clear
       - name: Run Migration
