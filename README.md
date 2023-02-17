@@ -3,7 +3,7 @@
 ![example workflow](https://github.com/emtiazzahid/laravel-quiz-system/actions/workflows/laravel.yml/badge.svg)
 
 
-## Demo: [API](https://squiz-api.herokuapp.com/) | [APP](https://squiz-app.netlify.app/)
+## Demo: [APP](https://squiz-app.netlify.app/)
 
 [![Api Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/1269242-ade4235a-9b13-42ad-bd2f-910cacd801ba?action=collection%2Ffork&collection-url=entityId%3D1269242-ade4235a-9b13-42ad-bd2f-910cacd801ba%26entityType%3Dcollection%26workspaceId%3Df794fb65-ef0e-4088-b879-87f113b728e1)
 
