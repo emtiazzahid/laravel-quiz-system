@@ -16,5 +16,5 @@ jobs:
             password: ${{ secrets.FTP_PASSWORD }}
             server: ${{ secrets.FTP_SERVER }}
             port: ${{ secrets.FTP_PORT }}
-            remote_path: ${{ secrets.FTP_PATH }}
+            remote_path: '/home/aralexgl/quiz.devdia.com/'
             sftp_only: false
