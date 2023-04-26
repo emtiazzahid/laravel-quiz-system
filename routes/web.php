@@ -20,3 +20,9 @@ Route::get('/', function () {
         'description' => 'Api built with PHP 8. Framework used Laravel',
     ]);
 });
+
+
+Route::get('/cache-reset', function () {
+    \Illuminate\Support\Facades\Artisan::call('config:cache');
+    \Illuminate\Support\Facades\Artisan::call('route:cache');
+});

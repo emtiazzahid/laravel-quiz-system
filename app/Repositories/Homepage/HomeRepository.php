@@ -12,12 +12,19 @@ class HomeRepository implements HomeInterface
      */
     public function getQuizzes($request)
     {
+        $quizzes =  Quiz::orderBy('id', 'desc');
+
         if (!empty($request->title)) {
-            $quizzes = Quiz::search($request->title);
-            return $quizzes->paginate($request->perPage);
+            $query = $request->title;
+
+            $quizzes = $quizzes->where('title', 'like', '%'.$query.'%')
+                ->orWhere('description', 'like', '%'.$query.'%')
+                ->orWhereHas('author', function ($q) use ($query) {
+                    $q->where('name', 'like', '%'.$query.'%');
+                });
         }
 
-        return Quiz::paginate($request->perPage);
+        return $quizzes->paginate($request->perPage);
     }
 
     /**
@@ -27,18 +34,5 @@ class HomeRepository implements HomeInterface
     public function getQuizById($id)
     {
         return Quiz::find($id);
-    }
-
-    // use this method if scout search is disabled or not using
-    private function regularSearch($query)
-    {
-        $quizzes =  Quiz::orderBy('id', 'desc');
-
-        $quizzes->where('title', 'like', '%'.$query.'%')
-            ->orWhereHas('author', function ($q) use ($query) {
-                $q->where('name', 'like', '%'.$query.'%');
-            });
-
-        return $quizzes;
     }
 }

@@ -48,18 +48,6 @@ php artisan migrate --seed
 .\vendor\bin\phpunit
 ```
 
-#### Optionals:
-#### [Laravel scout support](https://laravel.com/docs/9.x/scout)
-to use laravel scout set your driver configs to .env
-
-example for algolia
-```
-SCOUT_DRIVER=algolia
-SCOUT_QUEUE=true
-ALGOLIA_APP_ID=
-ALGOLIA_SECRET=
-```
-
 ### For Frontend Repo Visit: [quiz app](https://github.com/emtiazzahid/quiz-app)
 
 ## Screenshot
@@ -71,4 +59,3 @@ ALGOLIA_SECRET=
 ## License
 
 The MIT License (MIT)
-

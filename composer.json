@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.1.0",
-        "algolia/scout-extended": "3.0",
         "fakerphp/faker": "^1.9.1",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^10.0",
