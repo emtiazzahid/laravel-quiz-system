@@ -1,16 +1,16 @@
 on:
   push:
-    branches:
-      main
-name: 🚀 Deploy website on push
+      branches:
+        - main
+name: 🚀 Deploy on live
 jobs:
   web-deploy:
-    name: 🎉 Deploy
+    name: 🎉 Deploy Live
     runs-on: ubuntu-latest
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v3
-    
+
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
