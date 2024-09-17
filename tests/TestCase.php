@@ -4,6 +4,7 @@ namespace Tests;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Laravel\Sanctum\Sanctum;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -11,23 +12,9 @@ abstract class TestCase extends BaseTestCase
 
     public function actingAsUser()
     {
-        $password = 'password';
-
-        // every generated e-mail will be accepted
-        $user = User::factory()->create();
-
-        $token = auth('api')->attempt([
-            'email' => $user->email,
-            'password' => $password
-        ]);
-
-        $this->withHeaders(
-            array_merge([
-                $this->defaultHeaders,
-                ['Authorization' => 'Bearer ' . $token]
-            ])
+        return Sanctum::actingAs(
+            User::factory()->create(),
+            ['*']
         );
-
-        return $this;
     }
 }

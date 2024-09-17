@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TokenAbility;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\QuizController;
@@ -21,19 +22,22 @@ use App\Http\Controllers\ReportsController;
 */
 
 Route::group([
-    'middleware' => 'api',
     'prefix' => 'auth'
 ], function ($router) {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::post('/refresh', [AuthController::class, 'refresh'])->middleware([
+        'auth:sanctum',
+        'ability:'.TokenAbility::ISSUE_ACCESS_TOKEN->value,
+    ]);
+
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
 });
 
 // Authorised routes
 Route::group([
-    'middleware' => ['api','auth']
+    'middleware' => ['auth:sanctum']
 ], function ($router) {
     Route::put('quiz/{id}/mcq', [QuizController::class,'updateMCQForQuiz']);
     Route::get('quiz/{id}/mcq', [QuizController::class,'quizWithMCQ']);
@@ -44,7 +48,6 @@ Route::group([
 });
 
 Route::group([
-    'middleware' => 'api',
     'prefix' => 'pub'
 ], function ($router) {
     // Public routes

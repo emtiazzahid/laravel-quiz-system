@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
-use JWTAuth;
 
 class AuthTest extends TestCase
 {
@@ -30,7 +29,7 @@ class AuthTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
-                'access_token', 'token_type', 'expires_in'
+                'token'
             ]);
     }
 
@@ -66,7 +65,7 @@ class AuthTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
-                'access_token', 'token_type', 'expires_in'
+                'token'
             ]);
     }
 
