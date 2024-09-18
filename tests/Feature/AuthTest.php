@@ -4,82 +4,93 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Config;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
     use RefreshDatabase;
-    /**
-     * Login as default API user and get token back.
-     *
-     * @return void
-     */
-    public function testLogin()
+
+    public function test_user_can_register()
     {
-        $user = User::factory()->create();
-
-        $baseUrl = Config::get('app.url') . '/api/auth/login';
-
-        $response = $this->json('POST', $baseUrl . '/', [
-            'email' => $user->email,
-            'password' => 'password'
+        $response = $this->postJson('/api/auth/register', [
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
         ]);
 
-        $response
-            ->assertStatus(200)
-            ->assertJsonStructure([
-                'token'
-            ]);
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
+            'user' => [
+                'id',
+                'name',
+                'email',
+            ],
+            'token',
+        ]);
+
+        $this->assertDatabaseHas('users', ['email' => 'john@example.com']);
     }
 
-    /**
-     * Test logout.
-     *
-     * @return void
-     */
-    public function testLogout()
+    public function test_user_can_login_with_valid_credentials()
     {
-        $baseUrl = Config::get('app.url') . '/api/auth/logout';
+        $user = User::factory()->create([
+            'email' => 'jane@example.com',
+            'password' => bcrypt('password123'),
+        ]);
 
-        $response = $this->actingAsUser()
-            ->json('POST', $baseUrl, []);
-
-        $response->assertStatus(200)
-            ->assertExactJson([
-                'message' => 'User successfully signed out'
-            ]);
-    }
-
-    /**
-     * Test token refresh.
-     *
-     * @return void
-     */
-    public function testRefresh()
-    {
-        $baseUrl = Config::get('app.url') . '/api/auth/refresh';
-
-        $response = $this->actingAsUser()->json('POST', $baseUrl, []);
-
-        $response
-            ->assertStatus(200)
-            ->assertJsonStructure([
-                'token'
-            ]);
-    }
-
-    /**
-     * Get all users.
-     *
-     * @return void
-     */
-    public function testGetUsers()
-    {
-        $baseUrl = Config::get('app.url') . '/api/quiz';
-
-        $response = $this->actingAsUser()->json('GET', $baseUrl . '/', []);
+        $response = $this->postJson('/api/auth/login', [
+            'email' => 'jane@example.com',
+            'password' => 'password123',
+        ]);
 
         $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'user' => [
+                'id',
+                'name',
+                'email',
+            ],
+            'token',
+        ]);
+    }
+
+    public function test_user_cannot_login_with_invalid_credentials()
+    {
+        User::factory()->create([
+            'email' => 'jane@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $response = $this->postJson('/api/auth/login', [
+            'email' => 'jane@example.com',
+            'password' => 'wrongpassword',
+        ]);
+
+        $response->assertStatus(401);
+    }
+
+    public function test_user_can_refresh_token()
+    {
+        $user = User::factory()->create();
+        $token = $user->createToken('TestToken', ['*'])->plainTextToken;
+
+        $response = $this->withHeaders(['Authorization' => 'Bearer ' . $token])
+            ->postJson('/api/auth/refresh');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure(['token']);
+    }
+
+    public function test_user_cannot_refresh_token_without_valid_ability()
+    {
+        $user = User::factory()->create();
+        $token = $user->createToken('TestToken', ['non-valid-ability'])->plainTextToken;
+
+        $response = $this->withHeaders(['Authorization' => 'Bearer ' . $token])
+            ->postJson('/api/auth/refresh');
+
+        $response->assertStatus(403);
     }
 }

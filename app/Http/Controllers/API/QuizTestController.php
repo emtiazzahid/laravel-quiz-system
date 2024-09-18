@@ -1,11 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
-use App\Http\Requests\QuizRequest;
 use App\Http\Resources\PublicQuizResource;
-use App\Http\Resources\QuizResource;
-use App\Repositories\Quiz\QuizInterface;
 use App\Repositories\Quiz\QuizTestInterface;
 use Illuminate\Http\Request;
 

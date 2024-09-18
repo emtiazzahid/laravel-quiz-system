@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Http\Resources\QuizResource;
 use App\Repositories\Homepage\HomeInterface;
@@ -25,13 +25,19 @@ class HomeController extends BaseController
     }
 
     /**
-     * @param $id
-     * @return QuizResource
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse|QuizResource
      */
-    public function quiz($id): QuizResource
+    public function quiz($id)
     {
-        return new QuizResource(
-            $this->home->getQuizById($id)
-        );
+        $quiz = $this->home->getQuizById($id);
+
+        if (!$quiz) {
+            return response()->json([
+                'message' => 'Quiz not found'
+            ], 404); // Return 404 Not Found if the quiz doesn't exist
+        }
+
+        return new QuizResource($quiz);
     }
 }

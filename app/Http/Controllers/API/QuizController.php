@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Http\Requests\QuizRequest;
 use App\Http\Resources\QuizResource;
@@ -43,6 +43,14 @@ class QuizController extends BaseController
      */
     public function show($id)
     {
+        $quiz = $this->quiz->getById($id);
+
+        if (!$quiz) {
+            return response()->json([
+                'message' => 'Quiz not found'
+            ], 404); // Return 404 Not Found if the quiz doesn't exist
+        }
+
         return new QuizResource(
             $this->quiz->getById($id)
         );
@@ -91,6 +99,14 @@ class QuizController extends BaseController
      */
     public function destroy($id)
     {
+        $quiz = $this->quiz->getById($id);
+
+        if (!$quiz) {
+            return response()->json([
+                'message' => 'Quiz not found'
+            ], 404);
+        }
+
          $this->quiz->delete($id);
 
          return $this->sendResponse('', 'Data deleted Successfully');

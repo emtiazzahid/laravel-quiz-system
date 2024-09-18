@@ -1,14 +1,14 @@
 <?php
 
 use App\Enums\TokenAbility;
+use App\Http\Controllers\API\AuthController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\QuizController;
-use App\Http\Controllers\MCQController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\QuizTestController;
-use App\Http\Controllers\QuizAttemptController;
-use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\API\QuizController;
+use App\Http\Controllers\API\MCQController;
+use App\Http\Controllers\API\HomeController;
+use App\Http\Controllers\API\QuizTestController;
+use App\Http\Controllers\API\QuizAttemptController;
+use App\Http\Controllers\API\ReportsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,11 +21,15 @@ use App\Http\Controllers\ReportsController;
 |
 */
 
+
 Route::group([
     'prefix' => 'auth'
 ], function ($router) {
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/register', [AuthController::class, 'register']);
+    Route::controller(AuthController::class)->group(function(){
+        Route::post('register', 'register');
+        Route::post('login', 'login');
+    });
+
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh'])->middleware([
         'auth:sanctum',
