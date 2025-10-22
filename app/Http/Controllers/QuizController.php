@@ -43,9 +43,13 @@ class QuizController extends BaseController
      */
     public function show($id)
     {
-        return new QuizResource(
-            $this->quiz->getById($id)
-        );
+        $data = $this->quiz->getById($id);
+
+        if (!$data) {
+            return $this->sendError('Quiz not found');
+        }
+
+        return new QuizResource($data);
     }
 
     /**

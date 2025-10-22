@@ -4,6 +4,7 @@ namespace Tests;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Auth;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -11,22 +12,11 @@ abstract class TestCase extends BaseTestCase
 
     public function actingAsUser()
     {
-        $password = 'password';
-
         // every generated e-mail will be accepted
         $user = User::factory()->create();
 
-        $token = auth('api')->attempt([
-            'email' => $user->email,
-            'password' => $password
-        ]);
-
-        $this->withHeaders(
-            array_merge([
-                $this->defaultHeaders,
-                ['Authorization' => 'Bearer ' . $token]
-            ])
-        );
+        $this->actingAs($user, 'sanctum');
+        Auth::setUser($user);
 
         return $this;
     }

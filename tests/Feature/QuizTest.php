@@ -15,7 +15,6 @@ class QuizTest extends TestCase
     public function test_quiz_get_by_id()
     {
         $this->actingAsUser();
-        $this->withoutMiddleware();
 
         $quiz = Quiz::factory()->create([
             'author_id' => auth()->user()->id
@@ -28,7 +27,6 @@ class QuizTest extends TestCase
     public function test_quiz_pagination()
     {
         $this->actingAsUser();
-        $this->withoutMiddleware();
 
         $total_data = 40;
         $require_data = 1;

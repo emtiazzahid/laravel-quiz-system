@@ -19,7 +19,6 @@ class MCQTest extends TestCase
     public function test_can_create_mcq()
     {
         $this->actingAsUser();
-        $this->withoutMiddleware();
 
         $mcqObj = new MCQ();
 

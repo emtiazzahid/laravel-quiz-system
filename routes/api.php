@@ -33,7 +33,7 @@ Route::group([
 
 // Authorised routes
 Route::group([
-    'middleware' => ['api','auth']
+    'middleware' => 'auth:sanctum'
 ], function ($router) {
     Route::put('quiz/{id}/mcq', [QuizController::class,'updateMCQForQuiz']);
     Route::get('quiz/{id}/mcq', [QuizController::class,'quizWithMCQ']);
@@ -52,7 +52,7 @@ Route::group([
     Route::get('quiz/{id}', [HomeController::class,'quiz']);
 
     Route::group([
-        'middleware' => ['auth']
+        'middleware' => 'auth:sanctum'
     ], function ($router) {
         Route::get('quiz/{id}/mcq', [QuizTestController::class,'mcqList']);
         Route::post('quiz/{id}/start', [QuizTestController::class,'start']);
@@ -61,5 +61,3 @@ Route::group([
         Route::get('attempts/{id}', [QuizAttemptController::class,'result']);
     });
 });
-
-

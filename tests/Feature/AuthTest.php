@@ -20,9 +20,7 @@ class AuthTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $baseUrl = Config::get('app.url') . '/api/auth/login';
-
-        $response = $this->json('POST', $baseUrl . '/', [
+        $response = $this->json('POST', '/api/auth/login', [
             'email' => $user->email,
             'password' => 'password'
         ]);
@@ -30,7 +28,7 @@ class AuthTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
-                'access_token', 'token_type', 'expires_in'
+                'access_token', 'token_type'
             ]);
     }
 
@@ -41,10 +39,8 @@ class AuthTest extends TestCase
      */
     public function testLogout()
     {
-        $baseUrl = Config::get('app.url') . '/api/auth/logout';
-
         $response = $this->actingAsUser()
-            ->json('POST', $baseUrl, []);
+            ->json('POST', '/api/auth/logout', []);
 
         $response->assertStatus(200)
             ->assertExactJson([
@@ -59,14 +55,12 @@ class AuthTest extends TestCase
      */
     public function testRefresh()
     {
-        $baseUrl = Config::get('app.url') . '/api/auth/refresh';
-
-        $response = $this->actingAsUser()->json('POST', $baseUrl, []);
+        $response = $this->actingAsUser()->json('POST', '/api/auth/refresh', []);
 
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
-                'access_token', 'token_type', 'expires_in'
+                'access_token', 'token_type'
             ]);
     }
 
@@ -77,9 +71,7 @@ class AuthTest extends TestCase
      */
     public function testGetUsers()
     {
-        $baseUrl = Config::get('app.url') . '/api/quiz';
-
-        $response = $this->actingAsUser()->json('GET', $baseUrl . '/', []);
+        $response = $this->actingAsUser()->json('GET', '/api/quiz', []);
 
         $response->assertStatus(200);
     }

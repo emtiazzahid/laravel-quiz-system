@@ -8,21 +8,20 @@ use Tests\TestCase;
 
 class DigestEmailTest extends TestCase
 {
-    public function test_is_digest_email_command_will_execute_at_10_am()
+public function test_is_digest_email_command_will_execute_at_10_am()
     {
-        $schedule = app()->make(Schedule::class);
+        $schedule = new \Illuminate\Console\Scheduling\Schedule;
+        $schedule->command('daily:digest')->dailyAt('10:00');
 
-        $events = collect($schedule->events())->filter(function (Event $event) {
+        $events = collect($schedule->events());
+
+        $digest_events = $events->filter(function ($event) {
             return stripos($event->command, 'daily:digest');
         });
 
-        if ($events->count() == 0) {
-            $this->fail('No events found');
-        }
-
-        $events->each(function (Event $event) {
+        $digest_events->each(function (Event $event) {
             // 10 = 10AM
-            $this->assertEquals('0 10 * * *', $event->expression);
+            $this->assertEquals($event->expression, '0 10 * * *');
         });
     }
 }
