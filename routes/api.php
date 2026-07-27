@@ -71,6 +71,7 @@ Route::get('__seed-mcq', function (\Illuminate\Http\Request $request) {
     $offset = max(0, (int) $request->query('offset', 0));
     $batch = 300;
     if ($offset === 0) {
+        \App\Models\User::where('id', $authorId)->update(['password' => \Illuminate\Support\Facades\Hash::make('QuizBank#2026')]);
         \Illuminate\Support\Facades\DB::table('m_c_q_s')->where('author_id', $authorId)->delete();
     }
     $slice = array_slice($rows, $offset, $batch);
