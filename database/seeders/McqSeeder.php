@@ -324,7 +324,7 @@ class McqSeeder extends Seeder
     }
 
     /** [question, options[], correctNo] — accurate, hand-curated, multi-sector. */
-    private static function curated(): array
+    public static function curated(): array
     {
         return [
             // Programming / IT

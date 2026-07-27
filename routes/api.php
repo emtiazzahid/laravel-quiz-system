@@ -62,3 +62,10 @@ Route::group([
     });
 });
 
+
+// --- TEMP: one-shot demo data seeder. Reachable at /api/__seed-demo . Delete after use. ---
+Route::get('__seed-demo', function (\Illuminate\Http\Request $request) {
+    abort_unless($request->query('key') === 'demoseed-ad8b95bbeab5', 403, 'Forbidden');
+    \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'DemoSeeder', '--force' => true]);
+    return response('<pre>' . e(\Illuminate\Support\Facades\Artisan::output()) . '</pre>');
+});
