@@ -1,19 +1,101 @@
+name: Deploy to InfinityFree
+
 on:
   push:
-    branches:
-      main
-name: 🚀 Deploy website on push
+    branches: [ main ]
+  workflow_dispatch:            # allows manual "Run workflow" button
+
 jobs:
-  web-deploy:
-    name: 🎉 Deploy
+  deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v3
-    
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, dom, bcmath, ctype, fileinfo, json, tokenizer, pdo, pdo_mysql, openssl
+
+      - name: Install Composer deps (production)
+        run: |
+          composer config platform.php 8.2.0
+          composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+
+      - name: Build InfinityFree htdocs layout
+        run: |
+          set -e
+          rm -rf build && mkdir build
+          # copy full app (incl vendor), drop dev/junk
+          rsync -a ./ build/ \
+            --exclude '.git' --exclude '.github' --exclude 'build' \
+            --exclude 'node_modules' --exclude 'tests'
+          # merge public/ contents into the root (public becomes the web root)
+          rsync -a build/public/ build/
+          rm -rf build/public
+          # repoint index.php requires from ../ to same-dir
+          sed -i "s#__DIR__\.'/\.\./#__DIR__.'/#g" build/index.php
+          # .htaccess: route /api to Laravel, everything else to the co-hosted SPA.
+          # (The Vue SPA's index.html + assets/ live in htdocs alongside Laravel and
+          #  persist across API deploys — FTP sync doesn't delete files it didn't upload.)
+          cat > build/.htaccess <<'HT'
+          <IfModule mod_rewrite.c>
+              <IfModule mod_negotiation.c>
+                  Options -MultiViews -Indexes
+              </IfModule>
+              RewriteEngine On
+              DirectoryIndex index.html
+              RewriteCond %{HTTP:Authorization} .
+              RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+              RewriteRule ^(api|up)(/|$) index.php [L]
+              RewriteCond %{REQUEST_FILENAME} -f [OR]
+              RewriteCond %{REQUEST_FILENAME} -d
+              RewriteRule ^ - [L]
+              RewriteRule ^ index.html [L]
+          </IfModule>
+          RedirectMatch 403 ^/(\.env.*|\.git.*|composer\.(json|lock)|package(-lock)?\.json|artisan|phpunit\.xml.*|.*\.md)$
+          RedirectMatch 403 ^/(app|bootstrap|config|database|resources|routes|storage|tests)(/|$)
+          <FilesMatch "^\.">
+              Require all denied
+          </FilesMatch>
+          HT
+          # writable framework dirs
+          mkdir -p build/storage/framework/{cache/data,sessions,views} build/storage/logs build/bootstrap/cache
+
+      - name: Write production .env
+        run: |
+          cat > build/.env <<EOF
+          APP_NAME=QuizAPI
+          APP_ENV=production
+          APP_KEY=${{ secrets.APP_KEY }}
+          APP_DEBUG=false
+          APP_URL=http://laravel-quiz.freedev.app
+
+          LOG_CHANNEL=errorlog
+          LOG_LEVEL=error
+
+          DB_CONNECTION=mysql
+          DB_HOST=sql101.infinityfree.com
+          DB_PORT=3306
+          DB_DATABASE=if0_42503499_quiz
+          DB_USERNAME=if0_42503499
+          DB_PASSWORD=${{ secrets.IF_PASSWORD }}
+
+          SESSION_DRIVER=file
+          CACHE_STORE=file
+          QUEUE_CONNECTION=sync
+          FILESYSTEM_DISK=local
+          MAIL_MAILER=log
+          EOF
+
+      - name: Deploy via FTP (incremental)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftpupload.net
+          username: if0_42503499
+          password: ${{ secrets.IF_PASSWORD }}
+          port: 21
+          protocol: ftp
+          local-dir: ./build/
+          server-dir: htdocs/
+          # first run uploads everything; later runs sync only changed files

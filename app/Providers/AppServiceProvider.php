@@ -12,6 +12,7 @@ use App\Repositories\Quiz\QuizTestInterface;
 use App\Repositories\Quiz\QuizTestRepository;
 use App\Repositories\Report\ReportInterface;
 use App\Repositories\Report\ReportRepository;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -37,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // InfinityFree MySQL caps index keys at 1000 bytes; shrink default string length.
+        Schema::defaultStringLength(191);
     }
 }
