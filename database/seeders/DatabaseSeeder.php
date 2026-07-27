@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserTableSeeder::class,
+            McqSeeder::class,
         ]);
 
         Quiz::factory()->count(20)->create()->each(function($c) {
